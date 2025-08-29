@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import RecoilProvider from "./providers/RecoilProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,10 +15,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "LeetClone",
-  description: "Web application that contains leetcode problems and video solutions",
+  description:
+    "Web application that contains leetcode problems and video solutions",
   icons: {
     icon: "/favicon.png",
-  }
+  },
 };
 
 export default function RootLayout({
@@ -28,9 +30,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <RecoilProvider>
+          {children}
+        </RecoilProvider>
       </body>
     </html>
   );

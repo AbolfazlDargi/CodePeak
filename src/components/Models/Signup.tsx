@@ -1,11 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
+import { useAuthStore } from "@/stores/authModalAtom";
 
 // type SignupProps = {
     
 // };
 
 const Signup:React.FC = () => {
+
+    const openModal = useAuthStore((state) => state.openModal)
     
     return (
       <div>
@@ -57,12 +60,12 @@ const Signup:React.FC = () => {
           </div>
           <button
             type="submit"
-            className=" w-full  text-white focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#FF9916] hover:bg-[#FF9916] cursor-pointer">
+            className=" w-full  text-white focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#FF9916] hover:bg-[#C17A0F] cursor-pointer">
             Register
           </button>
           <div className="text-sm font-medium text-gray-300">
             Already have an account ?{" "}
-            <Link href="#" className="text-blue-700 hover:underline">
+            <Link href="#" className="text-blue-700 hover:underline" onClick={() =>openModal("login")}>
               Log in
             </Link>
           </div>

@@ -1,9 +1,11 @@
 import React from "react";
 import Link from "next/link";
+import { useAuthStore } from "@/stores/authModalAtom";
 
 // type LoginProps = {}
 
 const Login: React.FC = () => {
+  const openModal = useAuthStore((state) => state.openModal);
   return (
     <div>
       <form action="" className="space-y-6 px-6 pb-4">
@@ -37,19 +39,26 @@ const Login: React.FC = () => {
         </div>
         <button
           type="submit"
-          className=" w-full  text-white focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#FF9916] hover:bg-[#FF9916] cursor-pointer">
+          className=" w-full  text-white focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#FF9916] hover:bg-[#C17A0F] cursor-pointer">
           Login
         </button>
         <button className="flex w-full justify-end">
           <Link
+            id="forgetPassword"
             href="#"
-            className="text-sm block text-[#FF9916] hover:underline w-full text-right">
+            className="text-sm block text-[#FF9916] hover:underline w-full text-right"
+            onClick={() => openModal("forgetPassword")}>
             Forgot Password?
           </Link>
         </button>
         <div className="text-sm font-medium text-gray-300">
-          Not Registered? {" "}
-          <Link href="#" className="text-blue-700 hover:underline">create account</Link>
+          Not Registered?{" "}
+          <Link
+            href="#"
+            className="text-blue-700 hover:underline"
+            onClick={() => openModal("register")}>
+            create account
+          </Link>
         </div>
       </form>
     </div>
