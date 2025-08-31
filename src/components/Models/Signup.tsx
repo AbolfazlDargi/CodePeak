@@ -40,12 +40,8 @@ const Signup: React.FC = () => {
 
       if (!newUser) return;
       router.push("/");
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        alert(error.message);
-      } else {
-        alert("An unknown error occurred.");
-      }
+    } catch (error: any) {
+      alert(error.message);
     }
   };
   console.log(inputs);
