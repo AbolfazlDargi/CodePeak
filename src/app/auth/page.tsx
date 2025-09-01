@@ -20,10 +20,12 @@ const Authpage: React.FC = () => {
     if(user){
       router.push("/")
     }
-    if (!loading && !user){
+    if (!loading && !user && !error){
       setPageLoading(false)
-    } 
-  },[user, loading, router])
+    } else if(error){
+      alert("Try Again")
+    }
+  },[user, loading, router, error])
 
   if (pageLoading){
     return null
