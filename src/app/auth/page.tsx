@@ -1,12 +1,33 @@
 "use client";
 
 import Navbar from "@/components/Navbar/Navbar";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Hero from "../../../public/hero.png";
 import AuthModal from "@/components/Models/AuthModal";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/firebase";
+import { useRouter } from 'next/navigation';
 
 const Authpage: React.FC = () => {
+
+  const [user, loading, error] = useAuthState(auth)
+  const [pageLoading, setPageLoading] = useState(true)
+
+  const router = useRouter()
+
+  useEffect(() =>{
+    if(user){
+      router.push("/")
+    }
+    if (!loading && !user){
+      setPageLoading(false)
+    } 
+  },[user, loading, router])
+
+  if (pageLoading){
+    return null
+  }
   return (
     <div className="bg-gradient-to-b from-gray-600 to-black h-screen relative">
       <div className="max-w-7xl mx-auto">
