@@ -1,13 +1,19 @@
+"use client"
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import LogoFull from "../../../public/logo-full.png"
+import LogoFull from "../../../public/logo-full.png";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/firebase";
+import Avatar from "../../../public/avatar.png"
 
 // type topBarProps = {
 
 // };
 
-const topBar: React.FC = () => {
+const TopBar: React.FC = () => {
+  const [user] = useAuthState(auth);
   return (
     <nav className="relative fle h-[50px] w-full shrink-0 items-center px-5 bg-[rgb(40,40,40)] text-[rgb(179,179,179)] p-2">
       <div className="flex w-full items-center justify-center max-w-[1200px] mx-auto">
@@ -30,15 +36,24 @@ const topBar: React.FC = () => {
               premium
             </a>
           </div>
-          <Link href="/auth">
-            <button className="bg-[hsla(0,0%,100%,.1)] py-1 px-2 cursor-pointer rounded-lg hover:bg-[hsla(0,0%,100%,.14)]">
-              Sign In
-            </button>
-          </Link>
+          {!user && (
+            <Link href="/auth">
+              <button className="bg-[hsla(0,0%,100%,.1)] py-1 px-2 cursor-pointer rounded-lg hover:bg-[hsla(0,0%,100%,.14)]">
+                Sign In
+              </button>
+            </Link>
+          )}
+
+          {user && (
+            <div className="cursor-pointer group relative">
+              <Image src={Avatar} alt="user profile img" className="h-8 w-8 rounded-full"></Image>
+            </div>
+          )}
         </div>
       </div>
     </nav>
   );
 };
 
-export default topBar;
+export default TopBar;
+

@@ -1,4 +1,4 @@
-import TopBar from "@/components/topBar/topBar";
+import TopBar from "@/components/topBar/TopBar";
 import ProblemsTable from "@/components/problemsTable/problemsTable";
 
 
