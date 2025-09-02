@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -6,7 +6,7 @@ import Image from "next/image";
 import LogoFull from "../../../public/logo-full.png";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebase";
-import Avatar from "../../../public/avatar.png"
+import Avatar from "../../../public/avatar.png";
 
 // type topBarProps = {
 
@@ -46,7 +46,13 @@ const TopBar: React.FC = () => {
 
           {user && (
             <div className="cursor-pointer group relative">
-              <Image src={Avatar} alt="user profile img" className="h-8 w-8 rounded-full"></Image>
+              <Image
+                src={Avatar}
+                alt="user profile img"
+                className="h-8 w-8 rounded-full"></Image>
+              <div className="absolute top-10 left-2/4 -translate-x-2/4 mx-auto bg-[rgb(40,40,40)] text-[rgb(255,161,22)] p-2 rounded-lg shadow-lg z-40 group-hover:scale-100 scale-0 transition-all duration-300 ease-in-out">
+                <p className="text-sm">{user.email}</p>
+              </div>
             </div>
           )}
         </div>
@@ -56,4 +62,3 @@ const TopBar: React.FC = () => {
 };
 
 export default TopBar;
-
