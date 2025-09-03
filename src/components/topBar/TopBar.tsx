@@ -8,6 +8,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebase";
 import Avatar from "../../../public/avatar.png";
 import Logout from "../Buttons/Logout";
+import { useAuthStore } from "@/stores/authModalAtom";
 
 // type topBarProps = {
 
@@ -15,6 +16,12 @@ import Logout from "../Buttons/Logout";
 
 const TopBar: React.FC = () => {
   const [user] = useAuthState(auth);
+  const openModal = useAuthStore((state) => state.openModal);
+
+  const handleClick = () => {
+    openModal("login");
+  };
+
   return (
     <nav className="relative fle h-[50px] w-full shrink-0 items-center px-5 bg-[rgb(40,40,40)] text-[rgb(179,179,179)] p-2">
       <div className="flex w-full items-center justify-center max-w-[1200px] mx-auto">
@@ -38,7 +45,7 @@ const TopBar: React.FC = () => {
             </a>
           </div>
           {!user && (
-            <Link href="/auth">
+            <Link href="/auth" onClick={handleClick}>
               <button className="bg-[hsla(0,0%,100%,.1)] py-1 px-2 cursor-pointer rounded-lg hover:bg-[hsla(0,0%,100%,.14)]">
                 Sign In
               </button>

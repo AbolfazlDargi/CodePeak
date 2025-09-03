@@ -8,9 +8,13 @@ type AuthState = {
   closeModal: () => void;
 };
 
+
 export const useAuthStore = create<AuthState>((set) => ({
   isOpen: false,
   type: "login",
+  setAuthModal: (data: AuthState | Partial<AuthState>) => set((prev) => ({ ...prev, ...data })),
   openModal: (type = "login") => set({ isOpen: true, type }),
   closeModal: () => set({ isOpen: false }),
 }));
+
+
