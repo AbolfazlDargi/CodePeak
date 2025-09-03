@@ -7,6 +7,7 @@ import LogoFull from "../../../public/logo-full.png";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebase";
 import Avatar from "../../../public/avatar.png";
+import Logout from "../Buttons/Logout";
 
 // type topBarProps = {
 
@@ -55,6 +56,7 @@ const TopBar: React.FC = () => {
               </div>
             </div>
           )}
+          {user && <Logout />}
         </div>
       </div>
     </nav>
