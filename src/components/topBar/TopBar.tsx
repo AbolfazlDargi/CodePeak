@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import LogoFull from "../../../public/logo-full.png";
+import LogoFull from "../../../public/CodePeak.png";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebase";
 import Avatar from "../../../public/avatar.png";
