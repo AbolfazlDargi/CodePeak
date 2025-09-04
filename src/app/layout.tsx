@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LeetClone",
+  title: "CodePeak",
   description:
-    "Web application that contains leetcode problems and video solutions",
+    "Web application that contains codePeak problems and video solutions",
   icons: {
     icon: "/favicon.png",
   },

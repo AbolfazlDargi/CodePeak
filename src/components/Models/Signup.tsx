@@ -59,9 +59,7 @@ const Signup: React.FC = () => {
   return (
     <div>
       <form className="space-y-6 px-6 pb-4" onSubmit={handleRegister}>
-        <h3 className="text-xl font-medium text-white">
-          Register to LeetClone
-        </h3>
+        <h3 className="text-xl font-medium text-white">Register to codePeak</h3>
         <div>
           <label
             htmlFor="email"

@@ -54,7 +54,7 @@ const Login: React.FC = () => {
   return (
     <div>
       <form action="" className="space-y-6 px-6 pb-4" onSubmit={handleLogin}>
-        <h3 className="text-xl font-medium text-white">Sign in to LeetClone</h3>
+        <h3 className="text-xl font-medium text-white">Sign in to PeakCode</h3>
         <div>
           <label
             htmlFor="email"
