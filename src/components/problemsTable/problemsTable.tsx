@@ -52,7 +52,7 @@ const ProblemsTable: React.FC = () => {
               <td className="px-6 py-4">
                 <Link
                   className="hover:text-blue-600 cursor-pointer"
-                  href={`/problems/>${doc.id}`}>
+                  href={`/problems/${doc.id}`}>
                   {doc.title}
                 </Link>
               </td>
@@ -65,7 +65,12 @@ const ProblemsTable: React.FC = () => {
                   <AiFillYoutube
                     fontSize={"28"}
                     className="cursor-pointer hover:text-red-600"
-                    onClick={ () => setYoutubePlayer({isOpen: true, videoId: doc.videoId as string})}
+                    onClick={() =>
+                      setYoutubePlayer({
+                        isOpen: true,
+                        videoId: doc.videoId as string,
+                      })
+                    }
                   />
                 ) : (
                   <p className="text-gray-400">Coming soon</p>

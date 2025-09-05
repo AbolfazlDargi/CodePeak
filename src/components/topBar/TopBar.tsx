@@ -9,12 +9,14 @@ import { auth } from "@/firebase/firebase";
 import Avatar from "../../../public/avatar.png";
 import Logout from "../Buttons/Logout";
 import { useAuthStore } from "@/stores/authModalAtom";
+import {  FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { BsList } from "react-icons/bs";
 
-// type topBarProps = {
+type problemPage = {
+  problemPage: string;
+};
 
-// };
-
-const TopBar: React.FC = () => {
+const TopBar: React.FC = (problemPage) => {
   const [user] = useAuthState(auth);
   const openModal = useAuthStore((state) => state.openModal);
 
@@ -24,7 +26,10 @@ const TopBar: React.FC = () => {
 
   return (
     <nav className="relative fle h-[50px] w-full shrink-0 items-center px-5 bg-[rgb(40,40,40)] text-[rgb(179,179,179)] p-2">
-      <div className="flex w-full items-center justify-center max-w-[1200px] mx-auto">
+      <div
+        className={`flex w-full items-center justify-between ${
+          !problemPage ? " max-w-[1200px] mx-auto" : ""
+        }  `}>
         <Link href="/" className="h-[30px] flex-1">
           <Image
             src={LogoFull}
@@ -34,6 +39,25 @@ const TopBar: React.FC = () => {
             height={120}
           />
         </Link>
+
+        {problemPage && (
+          <div className="flex items-center gap-4 flex-1 justify-center">
+            <div className="flex  items-center justify-center rounded-lg bg-[hsla(0,0%,100%,.1)] hover:bg-[hsla(0,0%,100%,.14)] h-8 w-8 cursor-pointer">
+              <FaChevronLeft />
+            </div>
+              <Link
+                href="/"
+                className="flex items-center gap-2 font-medium max-w-[170px] text-[rgb(219,219,219)] cursor-pointer">
+                <div>
+                  <BsList />
+                </div>
+                <p>Problem List</p>
+              </Link>
+              <div className="flex  items-center justify-center rounded-lg bg-[hsla(0,0%,100%,.1)] hover:bg-[hsla(0,0%,100%,.14)] h-8 w-8  cursor-pointer">
+                <FaChevronRight />
+              </div>
+            </div>
+        )}
         <div className="flex items-center space-x-4 flex-1 justify-end">
           <div>
             <a
