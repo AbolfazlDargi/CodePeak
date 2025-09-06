@@ -11,6 +11,7 @@ import Logout from "../Buttons/Logout";
 import { useAuthStore } from "@/stores/authModalAtom";
 import {  FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BsList } from "react-icons/bs";
+import Timer from "../Timer/Timer";
 
 type problemPage = {
   problemPage: string;
@@ -75,6 +76,8 @@ const TopBar: React.FC = (problemPage) => {
               </button>
             </Link>
           )}
+
+          {problemPage && <Timer/>} 
 
           {user && (
             <div className="cursor-pointer group relative">
