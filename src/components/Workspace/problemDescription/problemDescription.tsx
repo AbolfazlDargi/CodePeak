@@ -7,7 +7,7 @@ import React from 'react';
 const problemDescription:React.FC = () => {
     
     return(
-        <div></div>
+        <div className='h-screen'>problem desc</div>
     )
 }
 export default problemDescription;
