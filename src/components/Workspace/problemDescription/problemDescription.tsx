@@ -29,7 +29,7 @@ const problemDescription: React.FC = () => {
               <div className="text-white text-sm mt-10">
                 <div className="mt-4">
                   <div className="flex items-center mt-3">
-                    <div className="text-[rgb(0,184,163)] bg-[rgb(0,184,163)] inline-block rounded-[21px] bg-opacity-[.15] px-2.5 py-1 text-xs font-medium capitalize">
+                    <div className="text-[rgb(0,184,163)] bg-[rgb(5,77,68)] inline-block rounded-[21px] bg-opacity-[.15] px-2.5 py-1 text-xs font-medium capitalize">
                       Easy
                     </div>
                     <div className="rounded p-[3px] ml-4 text-lg transition-colors duration-200 text-[rgb(44,187,93)]">

@@ -3,13 +3,14 @@
 import React from "react";
 import Split from "react-split";
 import ProblemDescription from "./problemDescription/problemDescription";
+import Playground from "./Playground/Playground";
 
 const Workspace: React.FC = () => {
   return (
     <Split
       className="flex flex-row h-screen relative"
       sizes={[40, 60]}
-      minSize={200}
+      minSize={0}
       gutterSize={8}
       direction="horizontal"
       cursor="col-resize"
@@ -41,9 +42,7 @@ const Workspace: React.FC = () => {
         return gutterDiv;
       }}>
       <ProblemDescription />
-      <div className="bg-white text-black flex items-center justify-center">
-        The Code Editor will be here
-      </div>
+      <Playground/>
     </Split>
   );
 };
