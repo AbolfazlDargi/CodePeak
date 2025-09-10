@@ -18,7 +18,7 @@ const Playground: React.FC = () => {
         gutter={(index, direction) => {
           const gutter = document.createElement("div");
           gutter.className =
-            "bg-[rgb(60,60,60)] hover:bg-[rgb(100,100,100)] transition-colors duration-200 ease-in-out";
+            "bg-[#9ca3af] hover:bg-[#374151] transition-colors duration-200 ease-in-out";
           if (direction === "horizontal") {
             gutter.classList.add("cursor-col-resize", "w-2");
           } else {
