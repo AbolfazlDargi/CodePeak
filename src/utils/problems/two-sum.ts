@@ -1,4 +1,5 @@
 import assert from "assert";
+import { Problem } from "../types/problem";
 
 
 const starterCodeTwoSum = `function twoSum(nums,target){
@@ -31,7 +32,7 @@ const handlerTwoSum = (fn: any) => {
   }
 };
 
-export const twoSum: problem = {
+export const twoSum: Problem = {
   id: "two-sum",
   title: "1. Two sum",
   problemStatement: `
