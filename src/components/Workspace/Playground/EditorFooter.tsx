@@ -18,10 +18,10 @@ const EditorFooter: React.FC = () => {
           </button>
         </div>
         <div className="ml-auto flex items-center space-x-4">
-          <button className="px-3 py-1.5 text-sm font-medium items-center whitespace-nowrap transition-all focus:outline-none inline-flex bg-[hsla(0,0%,100%,.1)] hover:bg-[hsla(0,0%,100%,.14)] text-[rgba(239, 241, 246, 0.75)] rounded-lg cursor-pointer">
+          <button className="px-3 py-1.5 text-sm font-medium items-center whitespace-nowrap transition-all focus:outline-none inline-flex bg-[hsla(0,0%,100%,.1)] hover:bg-[hsla(0,0%,100%,.14)] text-[rgba(239, 241, 246, 0.75)] rounded-lg cursor-pointer text-white">
             Run
           </button>
-          <button className="px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex text-sm text-white bg-[rgb(44,187,93)] hover: bg-green-3 rounded-lg cursor-pointer">
+          <button className="px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex text-sm text-white bg-[rgb(44,187,93)] hover:bg-green-700 rounded-lg cursor-pointer">
             Submit
           </button>
         </div>

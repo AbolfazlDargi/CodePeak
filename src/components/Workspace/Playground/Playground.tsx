@@ -7,8 +7,13 @@ import { javascript } from "@codemirror/lang-javascript";
 import EditorFooter from "./EditorFooter";
 
 const Playground: React.FC = () => {
+
+  const boilerPlate = `function twoSum(nums, target){
+    // write your code here 
+  }`
+
   return (
-    <div className="flex flex-col bg-[rgb(40,40,40)] relative">
+    <div className="flex flex-col bg-[rgb(40,40,40)] relative overflow-x-hidden">
       <PreferenceNav />
       <Split
         className="flex flex-col h-[calc(100vh-94px)]"
@@ -29,7 +34,7 @@ const Playground: React.FC = () => {
         }}>
         <div className="w-full overflow-auto">
           <ReactCodeMirror
-            value="const a = 1"
+            value={boilerPlate}
             theme={vscodeDark}
             extensions={[javascript()]}
             style={{ fontSize: 16 }}
