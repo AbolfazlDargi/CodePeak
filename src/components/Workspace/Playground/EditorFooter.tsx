@@ -1,0 +1,32 @@
+import React from "react";
+import { BsChevronUp } from "react-icons/bs";
+
+// type EditorFooterProps = {
+
+// };
+
+const EditorFooter: React.FC = () => {
+  return (
+    <div className="flex bg-[rgb(40,40,40)] absolute bottom-0 z-10 w-full">
+      <div className="mx-5 my-[10px] flex justify-between w-full">
+        <div className="mr-2 flex flex-1 flex-nowrap items-center space-x-4 ">
+          <button className="px-3 py-1.5 font-medium items-center transition-all inline-flex bg-[hsla(0,0%,100%,.1)] text-sm hover:bg-[hsla(0,0%,100%,.14)] text-[rgba(239,241,246,0.75)] rounded-lg pl-3 pr-2 cursor-pointer">
+            Console
+            <div className="ml-1 transform transition flex items-center">
+              <BsChevronUp />
+            </div>
+          </button>
+        </div>
+        <div className="ml-auto flex items-center space-x-4">
+          <button className="px-3 py-1.5 text-sm font-medium items-center whitespace-nowrap transition-all focus:outline-none inline-flex bg-[hsla(0,0%,100%,.1)] hover:bg-[hsla(0,0%,100%,.14)] text-[rgba(239, 241, 246, 0.75)] rounded-lg cursor-pointer">
+            Run
+          </button>
+          <button className="px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex text-sm text-white bg-[rgb(44,187,93)] hover: bg-green-3 rounded-lg cursor-pointer">
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+export default EditorFooter;

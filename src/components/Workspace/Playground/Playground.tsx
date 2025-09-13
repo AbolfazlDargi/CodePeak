@@ -4,6 +4,7 @@ import Split from "react-split";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { javascript } from "@codemirror/lang-javascript";
+import EditorFooter from "./EditorFooter";
 
 const Playground: React.FC = () => {
   return (
@@ -40,7 +41,7 @@ const Playground: React.FC = () => {
               <div className="text-sm font-medium leading-5 text-white">
                 TestCase
               </div>
-              <hr className="absolute bottom-0 h-0.5 w-16 rounded-full border-none bg-white" />
+              <hr className="absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white" />
             </div>
           </div>
 
@@ -82,6 +83,7 @@ const Playground: React.FC = () => {
           </div>
         </div>
       </Split>
+      <EditorFooter/>
     </div>
   );
 };
