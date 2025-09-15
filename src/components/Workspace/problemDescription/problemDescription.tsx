@@ -22,9 +22,9 @@ const problemDescription: React.FC<problemDescriptionProps> = ({
 
       {/* main content */}
       <div className="flex px-0 py-4 h-[calc(100vh-94px)] overflow-y-auto">
-        <div className="px-5">
+        <div className="px-2">
           <div className="w-full">
-            <div className="flex space-x-4">
+            <div className="p-2">
               <div className="flex-1 mr-2 text-lg text-white font-medium">
                 {problem.title}
               </div>

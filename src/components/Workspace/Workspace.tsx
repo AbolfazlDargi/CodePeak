@@ -13,12 +13,12 @@ type WorkspaceProps = {
 const Workspace: React.FC<WorkspaceProps> = ({ problem }) => {
   return (
     <Split
-      className="flex flex-row h-screen relative justify-center"
+      className="flex flex-row h-screen relative"
       sizes={[40, 60]}
       minSize={0}
       gutterSize={8}
       direction="horizontal"
-      cursor="col-resize"
+      cursor="row-resize"
       gutter={(index, direction) => {
         const gutterDiv = document.createElement("div");
         gutterDiv.className = "bg-gray-700 relative";
