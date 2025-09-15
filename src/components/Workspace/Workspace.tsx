@@ -4,11 +4,16 @@ import React from "react";
 import Split from "react-split";
 import ProblemDescription from "./problemDescription/problemDescription";
 import Playground from "./Playground/Playground";
+import { Problem } from "@/utils/types/problem";
 
-const Workspace: React.FC = () => {
+type WorkspaceProps = {
+  problem: Problem;
+};
+
+const Workspace: React.FC<WorkspaceProps> = ({ problem }) => {
   return (
     <Split
-      className="flex flex-row h-screen relative"
+      className="flex flex-row h-screen relative justify-center"
       sizes={[40, 60]}
       minSize={0}
       gutterSize={8}
@@ -41,8 +46,8 @@ const Workspace: React.FC = () => {
         gutterDiv.appendChild(dot);
         return gutterDiv;
       }}>
-      <ProblemDescription />
-      <Playground/>
+      <ProblemDescription problem={problem}/>
+      <Playground problem={problem}/>
     </Split>
   );
 };

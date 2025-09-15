@@ -13,11 +13,11 @@ import {  FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BsList } from "react-icons/bs";
 import Timer from "../Timer/Timer";
 
-type problemPage = {
-  problemPage: string;
+type TopBarProps = {
+  problemPage?: boolean;
 };
 
-const TopBar: React.FC = (problemPage) => {
+const TopBar: React.FC<TopBarProps> = ({problemPage}) => {
   const [user] = useAuthState(auth);
   const openModal = useAuthStore((state) => state.openModal);
 
