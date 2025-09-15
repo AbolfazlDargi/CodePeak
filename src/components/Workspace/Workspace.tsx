@@ -18,7 +18,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ problem }) => {
       minSize={0}
       gutterSize={8}
       direction="horizontal"
-      cursor="row-resize"
+      cursor="col-resize"
       gutter={(index, direction) => {
         const gutterDiv = document.createElement("div");
         gutterDiv.className = "bg-gray-700 relative";
