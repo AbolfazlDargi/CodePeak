@@ -6,11 +6,13 @@ import Workspace from '@/components/Workspace/Workspace'
     
 // };
 
-const page:React.FC = () => {
+const ProblemPage:React.FC = () => {
     
-    return <div>
-        <TopBar/>
-        <Workspace/>
-    </div>
+    return (
+      <div>
+        <TopBar ProblemPage/>
+        <Workspace />
+      </div>
+    );
 }
-export default page;
+export default ProblemPage;
