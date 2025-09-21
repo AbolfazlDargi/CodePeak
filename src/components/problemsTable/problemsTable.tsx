@@ -6,16 +6,23 @@ import { AiFillYoutube } from "react-icons/ai";
 import Link from "next/link";
 import YouTube from "react-youtube";
 import { IoClose } from "react-icons/io5";
+import { collection, orderBy, query, getDocs } from "firebase/firestore";
+import { fireStore } from "@/firebase/firebase";
+import { DBProblem } from "@/utils/types/problem";
 
-// type problemsTableProps = {
-//   setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
-// };
+type problemsTableProps = {
+  setLoadingProblems?: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-const ProblemsTable: React.FC = () => {
+const ProblemsTable: React.FC<problemsTableProps> = ({
+  setLoadingProblems,
+}) => {
   const [youtubePlayer, setYoutubePlayer] = useState({
     isOpen: false,
     videoId: "",
   });
+
+  const problems = useGetProblems(setLoadingProblems);
 
   const closeModal = () => {
     setYoutubePlayer({ isOpen: false, videoId: "" });
@@ -50,11 +57,15 @@ const ProblemsTable: React.FC = () => {
                 <BiSolidCheckCircle fontSize={"25"} width={"25"} />
               </th>
               <td className="px-6 py-4">
+                {doc.link ?  (
+                  <Link href={doc.link} className="hover:text-blue-600 cursor-pointer" target="_blank"></Link>
+                ) : (
                 <Link
                   className="hover:text-blue-600 cursor-pointer"
                   href={`/problems/${doc.id}`}>
                   {doc.title}
                 </Link>
+                  )}
               </td>
               <td className={`px-6 py-4 ${difficulycolor}`}>
                 {doc.difficulty}
@@ -108,3 +119,28 @@ const ProblemsTable: React.FC = () => {
 };
 export default ProblemsTable;
 
+function useGetProblems(
+  setLoadingProblems?: React.Dispatch<React.SetStateAction<boolean>>
+) {
+  const [problemsData, setProblemsData] = useState<DBProblem[]>([]);
+
+  useEffect(() => {
+    const getProblems = async () => {
+      if (setLoadingProblems) setLoadingProblems(true);
+      const q = query(
+        collection(fireStore, "problems"),
+        orderBy("order", "asc")
+      );
+      const querySnapshot = await getDocs(q);
+      const tmp:DBProblem[] = [];
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+        tmp.push({ id: doc.id,...doc.data()} as DBProblem);
+      });
+      setProblemsData(tmp);
+      if (setLoadingProblems) setLoadingProblems(false);
+    };
+    getProblems();
+  }, [setLoadingProblems]);
+  return problemsData;
+}
