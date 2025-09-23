@@ -60,7 +60,7 @@ const problemDescription: React.FC<problemDescriptionProps> = ({ problem }) => {
                   </div>
                 )}
                 <div
-                  className="text-white text-sm"
+                  className="text-white text-sm "
                   dangerouslySetInnerHTML={{ __html: problem.problemStatement }}
                 />
 
