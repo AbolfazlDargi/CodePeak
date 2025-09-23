@@ -3,14 +3,14 @@ import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { BsCheck2Circle } from "react-icons/bs";
 import { TiStarOutline } from "react-icons/ti";
 import { Problem } from "@/utils/types/problem";
+import RectangleSkeleton from "@/components/Skeleton/RectangleSkeleton";
+import CircleSkeleton from "@/components/Skeleton/CircleSkeleton";
 
 type problemDescriptionProps = {
   problem: Problem;
 };
 
-const problemDescription: React.FC<problemDescriptionProps> = ({
-  problem,
-}) => {
+const problemDescription: React.FC<problemDescriptionProps> = ({ problem }) => {
   return (
     <div className="bg-[rgb(40,40,40)]">
       {/* (Tab section) */}
@@ -50,6 +50,15 @@ const problemDescription: React.FC<problemDescriptionProps> = ({
                     </div>
                   </div>
                 </div>
+                {loading && (
+                  <div className="mt-3 flex space-x-2">
+                    <RectangleSkeleton />
+                    <CircleSkeleton />
+                    <RectangleSkeleton />
+                    <RectangleSkeleton />
+                    <CircleSkeleton />
+                  </div>
+                )}
                 <div
                   className="text-white text-sm"
                   dangerouslySetInnerHTML={{ __html: problem.problemStatement }}
