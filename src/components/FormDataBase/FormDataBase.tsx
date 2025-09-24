@@ -55,9 +55,8 @@ const FormDataBase: React.FC = () => {
             <input
               onChange={handleInputChange}
               type="text"
-              placeholder="problem id"
               name="id"
-              className="bg-white "
+              className="bg-[rgb(42,48,56)] text-white border border-gray-400 rounded-md"
             />
           </div>
         </div>
@@ -68,9 +67,8 @@ const FormDataBase: React.FC = () => {
             <input
               onChange={handleInputChange}
               type="text"
-              placeholder="title"
               name="title"
-              className="bg-white"
+              className="bg-[rgb(42,48,56)] text-white border border-gray-400 rounded-md"
             />
           </div>
         </div>
@@ -80,10 +78,9 @@ const FormDataBase: React.FC = () => {
             <h2 className="text-white">difficulty</h2>
             <input
               type="text"
-              className="bg-white"
+              className="bg-[rgb(42,48,56)] text-white border border-gray-400 rounded-md"
               name="difficulty"
               onChange={handleInputChange}
-              placeholder="difficulty"
             />
           </div>
         </div>
@@ -95,9 +92,8 @@ const FormDataBase: React.FC = () => {
             <input
               onChange={handleInputChange}
               type="text"
-              placeholder="catgeroy"
               name="catgeroy"
-              className="bg-white"
+              className="bg-[rgb(42,48,56)] text-white border border-gray-400 rounded-md"
             />
           </div>
         </div>
@@ -106,10 +102,9 @@ const FormDataBase: React.FC = () => {
             <h2 className="text-white pl-6">order:</h2>
             <input
               onChange={handleInputChange}
-              type="text"
-              placeholder="order"
+              type="number"
               name="order"
-              className="bg-white"
+              className="bg-[rgb(42,48,56)] text-white border border-gray-400 rounded-md"
             />
           </div>
         </div>
@@ -120,9 +115,8 @@ const FormDataBase: React.FC = () => {
             <input
               onChange={handleInputChange}
               type="text"
-              placeholder="videoId"
               name="videoId"
-              className="bg-white"
+              className="bg-[rgb(42,48,56)] text-white border border-gray-400 rounded-md"
             />
           </div>
         </div>
@@ -133,14 +127,13 @@ const FormDataBase: React.FC = () => {
             <input
               onChange={handleInputChange}
               type="text"
-              placeholder="link?"
               name="link"
-              className="bg-white"
+              className="bg-[rgb(42,48,56)] text-white border border-gray-400 rounded-md"
             />
           </div>
         </div>
-        <div className="flex justify-center items-center">
-          <button className="bg-white cursor-pointer w-20 flex justify-center">
+        <div className="flex justify-center items-center ">
+          <button className="bg-[rgb(42,48,56)] text-white  shadow-gray-400 cursor-pointer w-30 h-8 items-center rounded-lg hover:bg-[rgb(91,97,105)] flex justify-center">
             Save to db
           </button>
         </div>
