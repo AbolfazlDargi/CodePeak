@@ -138,7 +138,6 @@ function useGetCurrentProblem(problemsId: string) {
       if (docSnap.exists()) {
         const problem = docSnap.data();
         setCurrentProblem({ id: docSnap.id, ...problem } as DBProblem);
-        // easy, medium, hard
         setProblemDiffcultyClass(
           problem.difficulty === "Easy"
             ? "bg-olive text-olive"
