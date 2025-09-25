@@ -13,105 +13,107 @@ type problemDescriptionProps = {
 };
 
 const ProblemDescription: React.FC<problemDescriptionProps> = ({ problem }) => {
-  const { loading, currentProblem, problemDiffcultyClass } = useGetCurrentProblem(problem.id);
+  const { loading, currentProblem, problemDiffcultyClass } =
+    useGetCurrentProblem(problem.id);
 
   return (
-    <div className="bg-[rgb(40,40,40)]">
+    <div className="bg-[rgb(40,40,40)] min-h-screen">
       {/* (Tab section) */}
-      <div className="flex h-11 w-full items-center pt-2 bg-[rgb(26,26,26)] text-white overflow-x-hidden">
-        <div className="bg-[rgb(40,40,40)] rounded-t[5px] px-5 py-[10px] text-xs cursor-pointer">
+      <div className="flex h-11 w-full items-center pt-2 bg-[rgb(26,26,26)] text-white overflow-x-auto">
+        <div className="bg-[rgb(40,40,40)] rounded-t-[5px] px-4 py-2 text-xs cursor-pointer whitespace-nowrap">
           Description
         </div>
       </div>
 
       {/* main content */}
-      <div className="flex  h-[calc(100vh-80px)] overflow-y-auto">
-        <div className="px-2">
-          <div className="w-full">
-            <div className="p-4">
-              <div className="flex-1 mr-2 text-lg text-white font-medium">
-                {problem?.title}
-              </div>
-              <div className="text-white text-sm mt-10">
-                <div className="mt-4">
-                  {!loading && currentProblem && (
-                    <div className="flex items-center mt-3">
-                      <div
-                        className={` ${problemDiffcultyClass} text-[rgb(0,184,163)] bg-[rgb(5,77,68)] inline-block rounded-[21px] bg-opacity-[.15] px-2.5 py-1 text-xs font-medium capitalize`}>
-                        {currentProblem.difficulty}
-                      </div>
-                      <div className="rounded p-[3px] ml-4 text-lg transition-colors duration-200 text-[rgb(44,187,93)]">
-                        <BsCheck2Circle />
-                      </div>
-                      <div className="flex items-center cursor-pointer hover:bg-[hsla(0,0%,100%,.1)] space-x-1 rounded p-[3px] ml-4 text-lg transition-colors duration-200 text-[rgb(179,179,179)]">
-                        <AiFillLike />
-                        <span className="text-us">{currentProblem.likes}</span>
-                      </div>
-                      <div className="flex items-center cursor-pointer hover:bg-[hsla(0,0%,100%,.1)] space-x-1 rounded p-[3px]  ml-4 text-lg transition-colors duration-200 text-green-s text-[rgb(179,179,179)]">
-                        <AiFillDislike />
-                        <span className="text-xs">
-                          {currentProblem.dislike}
-                        </span>
-                      </div>
-                      <div className="flex items-center cursor-pointer hover:bg-[hsla(0,0%,100%,.1)] space-x-1 rounded p-[3px] ml-4 text-lg transition-colors duration-200 text-[rgb(179,179,179)]">
-                        <TiStarOutline />
-                      </div>
+      <div className="flex h-auto md:h-[calc(100vh-70px)] overflow-y-auto">
+        <div className="w-full max-w-4xl mx-auto px-3 md:px-6">
+          <div className="p-3 md:p-6">
+            {/* Title */}
+            <div className="text-base md:text-lg text-white font-medium mb-4">
+              {problem?.title}
+            </div>
+
+            <div className="text-white text-sm mt-6 md:mt-10">
+              {/* Problem info */}
+              <div className="mt-4">
+                {!loading && currentProblem && (
+                  <div className="flex flex-wrap items-center gap-3 mt-3">
+                    <div
+                      className={`${problemDiffcultyClass} text-[rgb(0,184,163)] bg-[rgb(5,77,68)] inline-block rounded-[21px] bg-opacity-[.15] px-2.5 py-1 text-xs font-medium capitalize`}>
+                      {currentProblem.difficulty}
                     </div>
-                  )}
-                </div>
-                {loading && (
-                  <div className="mt-3 flex space-x-2">
-                    <RectangleSkeleton />
-                    <CircleSkeleton />
-                    <RectangleSkeleton />
-                    <RectangleSkeleton />
-                    <CircleSkeleton />
+                    <div className="rounded p-[3px] text-lg transition-colors duration-200 text-[rgb(44,187,93)]">
+                      <BsCheck2Circle />
+                    </div>
+                    <div className="flex items-center cursor-pointer hover:bg-[hsla(0,0%,100%,.1)] gap-1 rounded p-[3px] text-lg transition-colors duration-200 text-[rgb(179,179,179)]">
+                      <AiFillLike />
+                      <span className="text-xs">{currentProblem.likes}</span>
+                    </div>
+                    <div className="flex items-center cursor-pointer hover:bg-[hsla(0,0%,100%,.1)] gap-1 rounded p-[3px] text-lg transition-colors duration-200 text-[rgb(179,179,179)]">
+                      <AiFillDislike />
+                      <span className="text-xs">{currentProblem.dislike}</span>
+                    </div>
+                    <div className="flex items-center cursor-pointer hover:bg-[hsla(0,0%,100%,.1)] gap-1 rounded p-[3px] text-lg transition-colors duration-200 text-[rgb(179,179,179)]">
+                      <TiStarOutline />
+                    </div>
                   </div>
                 )}
-                <div
-                  className="text-white text-sm "
-                  dangerouslySetInnerHTML={{ __html: problem.problemStatement }}
-                />
+              </div>
 
-                {/* Examples */}
-                <div className="mt-4">
-                  {problem.examples.map((example, index) => (
-                    <div key={example.id}>
-                      <p className="font-medium text-white">
-                        Example {index + 1}:
-                      </p>
-                      <div className="bg-[hsla(0,0%,100%,0.1)] rounded-[0.5rem] text-[rgba(239,241,246,0.75)] font-[0.98rem] leading-5 mb-4 mt-4 p-4 whitespace-pre">
-                        <pre>
-                          <strong className="text-white">Input: </strong>
-                          {example.inputText}
-                          <br />
-                          <strong className="text-white">Output:</strong>
-                          {example.outputText}
-                          <br />
-                          {example.explanation && (
-                            <>
-                              <strong className="text-white">
-                                Explanation:
-                              </strong>
-                              {example.explanation}
-                            </>
-                          )}
-                        </pre>
-                      </div>
+              {/* Loading Skeleton */}
+              {loading && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <RectangleSkeleton />
+                  <CircleSkeleton />
+                  <RectangleSkeleton />
+                  <RectangleSkeleton />
+                  <CircleSkeleton />
+                </div>
+              )}
+
+              {/* Problem Statement */}
+              <div
+                className="text-white text-sm mt-6 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: problem.problemStatement }}
+              />
+
+              {/* Examples */}
+              <div className="mt-6">
+                {problem.examples.map((example, index) => (
+                  <div key={example.id} className="mb-6">
+                    <p className="font-medium text-white">
+                      Example {index + 1}:
+                    </p>
+                    <div className="bg-[hsla(0,0%,100%,0.1)] rounded-lg text-[rgba(239,241,246,0.85)] text-sm md:text-base leading-5 mt-3 p-3 md:p-4 whitespace-pre-wrap overflow-x-auto">
+                      <pre className="whitespace-pre-wrap break-words">
+                        <strong className="text-white">Input: </strong>
+                        {example.inputText}
+                        <br />
+                        <strong className="text-white">Output:</strong>{" "}
+                        {example.outputText}
+                        <br />
+                        {example.explanation && (
+                          <>
+                            <strong className="text-white">Explanation:</strong>{" "}
+                            {example.explanation}
+                          </>
+                        )}
+                      </pre>
                     </div>
-                  ))}
-                </div>
-
-                {/* Constraints */}
-                <div className="my-8 pb-4">
-                  <div className="text-white text-sm font-medium">
-                    Constraints:
                   </div>
-                  <ul
-                    className="text-white ml-5 list-disc"
-                    dangerouslySetInnerHTML={{ __html: problem.constraints }}
-                  />
+                ))}
+              </div>
+
+              {/* Constraints */}
+              <div className="my-6 md:my-8 pb-4">
+                <div className="text-white text-sm font-medium">
+                  Constraints:
                 </div>
+                <ul
+                  className="text-white ml-4 list-disc mt-2 space-y-1 text-sm md:text-base"
+                  dangerouslySetInnerHTML={{ __html: problem.constraints }}
+                />
               </div>
             </div>
           </div>
