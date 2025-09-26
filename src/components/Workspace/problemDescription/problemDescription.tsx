@@ -6,7 +6,9 @@ import { DBProblem, Problem } from "@/utils/types/problem";
 import RectangleSkeleton from "@/components/Skeleton/RectangleSkeleton";
 import CircleSkeleton from "@/components/Skeleton/CircleSkeleton";
 import { doc, getDoc } from "firebase/firestore";
-import { fireStore } from "@/firebase/firebase";
+import { auth, fireStore } from "@/firebase/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { toast } from "react-toastify";
 
 type problemDescriptionProps = {
   problem: Problem;
@@ -15,6 +17,20 @@ type problemDescriptionProps = {
 const ProblemDescription: React.FC<problemDescriptionProps> = ({ problem }) => {
   const { loading, currentProblem, problemDiffcultyClass } =
     useGetCurrentProblem(problem.id);
+
+  const { liked, disliked, solved, setData, starred } =
+    UseGetUsersDataOnProblem(problem.id);
+  const [user] = useAuthState(auth);
+
+  const handleClick = async () => {
+    if (!user) {
+      toast.error("You mus be logged in to like a problem", {
+        position: "top-center",
+        theme: "dark",
+      });
+      return;
+    }
+  };
 
   return (
     <div className="bg-[rgb(40,40,40)] min-h-screen">
@@ -46,8 +62,13 @@ const ProblemDescription: React.FC<problemDescriptionProps> = ({ problem }) => {
                     <div className="rounded p-[3px] text-lg transition-colors duration-200 text-[rgb(44,187,93)]">
                       <BsCheck2Circle />
                     </div>
-                    <div className="flex items-center cursor-pointer hover:bg-[hsla(0,0%,100%,.1)] gap-1 rounded p-[3px] text-lg transition-colors duration-200 text-[rgb(179,179,179)]">
-                      <AiFillLike />
+                    <div
+                      className="flex items-center cursor-pointer hover:bg-[hsla(0,0%,100%,.1)] gap-1 rounded p-[3px] text-lg transition-colors duration-200 text-[rgb(179,179,179)]"
+                      onClick={handleClick}>
+                      {liked && (
+                        <AiFillLike className="text-[rgb(10,132,255)]" />
+                      )}
+                      {!liked && <AiFillLike />}
                       <span className="text-xs">{currentProblem.likes}</span>
                     </div>
                     <div className="flex items-center cursor-pointer hover:bg-[hsla(0,0%,100%,.1)] gap-1 rounded p-[3px] text-lg transition-colors duration-200 text-[rgb(179,179,179)]">
@@ -151,4 +172,43 @@ function useGetCurrentProblem(problemsId: string) {
     getCurrentProblem();
   }, [problemsId]);
   return { currentProblem, loading, problemDiffcultyClass };
+}
+
+function UseGetUsersDataOnProblem(problemsId: string) {
+  const [data, setData] = useState({
+    liked: false,
+    disliked: false,
+    starred: false,
+    solved: false,
+  });
+  const [user] = useAuthState(auth);
+
+  useEffect(() => {
+    const GetUsersDataOnProblem = async () => {
+      const useRef = doc(fireStore, "users", user!.uid);
+      const userSnap = await getDoc(useRef);
+
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        const {
+          solvedProblems,
+          likedProblems,
+          dislikedProblems,
+          starredPRoblems,
+        } = data;
+        setData({
+          liked: likedProblems.includes(problemsId), // likedProblems["two-sum","jump-game"]
+          disliked: dislikedProblems.includes(problemsId),
+          starred: starredPRoblems.includes(problemsId),
+          solved: solvedProblems.includes(problemsId),
+        });
+      }
+    };
+
+    if (user) GetUsersDataOnProblem();
+    return () =>
+      setData({ liked: false, disliked: false, starred: false, solved: false });
+  }, [problemsId, user]);
+
+  return { ...data, setData };
 }
