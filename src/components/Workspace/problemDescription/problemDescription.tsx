@@ -5,7 +5,7 @@ import { TiStarOutline } from "react-icons/ti";
 import { DBProblem, Problem } from "@/utils/types/problem";
 import RectangleSkeleton from "@/components/Skeleton/RectangleSkeleton";
 import CircleSkeleton from "@/components/Skeleton/CircleSkeleton";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, runTransaction } from "firebase/firestore";
 import { auth, fireStore } from "@/firebase/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "react-toastify";
@@ -22,7 +22,7 @@ const ProblemDescription: React.FC<problemDescriptionProps> = ({ problem }) => {
     UseGetUsersDataOnProblem(problem.id);
   const [user] = useAuthState(auth);
 
-  const handleClick = async () => {
+  const handleLike = async () => {
     if (!user) {
       toast.error("You mus be logged in to like a problem", {
         position: "top-center",
@@ -30,6 +30,26 @@ const ProblemDescription: React.FC<problemDescriptionProps> = ({ problem }) => {
       });
       return;
     }
+    await runTransaction(fireStore, async (transaction) => {
+      const userRef = doc(fireStore, "users", user?.uid);
+      const problemRef = doc(fireStore, "problems", problem.id);
+      const UserDoc = await transaction.get(userRef)
+      const ProblemDoc = await transaction.get(problemRef)
+      if(!UserDoc.exists() || !ProblemDoc.exists()){
+        if(liked){
+          transaction.update(userRef,{
+            likedProblems: UserDoc.data().likedProblems.filter((pid:string) => pid !== problem.id)
+         })
+         transaction.update(problemRef,{
+          likes: ProblemDoc.data().likes - 1
+         })
+         setcurrentProblem
+
+        }
+          
+      }
+    });
+    
   };
 
   return (
@@ -64,7 +84,7 @@ const ProblemDescription: React.FC<problemDescriptionProps> = ({ problem }) => {
                     </div>
                     <div
                       className="flex items-center cursor-pointer hover:bg-[hsla(0,0%,100%,.1)] gap-1 rounded p-[3px] text-lg transition-colors duration-200 text-[rgb(179,179,179)]"
-                      onClick={handleClick}>
+                      onClick={handleLike}>
                       {liked && (
                         <AiFillLike className="text-[rgb(10,132,255)]" />
                       )}
