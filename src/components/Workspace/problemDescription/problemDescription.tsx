@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { AiFillDislike, AiFillLike } from "react-icons/ai";
+import {
+  AiFillDislike,
+  AiFillLike,
+  AiOutlineLoading3Quarters,
+} from "react-icons/ai";
 import { BsCheck2Circle } from "react-icons/bs";
 import { TiStarOutline } from "react-icons/ti";
 import { DBProblem, Problem } from "@/utils/types/problem";
@@ -9,48 +13,101 @@ import { doc, getDoc, runTransaction } from "firebase/firestore";
 import { auth, fireStore } from "@/firebase/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "react-toastify";
+import { pid } from "process";
 
 type problemDescriptionProps = {
   problem: Problem;
+  _solved: boolean;
 };
 
-const ProblemDescription: React.FC<problemDescriptionProps> = ({ problem }) => {
-  const { loading, currentProblem, problemDiffcultyClass } =
-    useGetCurrentProblem(problem.id);
-
-  const { liked, disliked, solved, setData, starred } =
-    UseGetUsersDataOnProblem(problem.id);
+const ProblemDescription: React.FC<problemDescriptionProps> = ({
+  problem,
+  _solved,
+}) => {
   const [user] = useAuthState(auth);
+  const { loading, currentProblem, problemDiffcultyClass, setCurrentProblem } =
+    useGetCurrentProblem(problem.id);
+  const { liked, disliked, solved, setData, starred } =
+    useGetUsersDataOnProblem(problem.id);
+  const [updateing, setUpdateing] = useState<boolean>(false);
 
-  const handleLike = async () => {
-    if (!user) {
-      toast.error("You mus be logged in to like a problem", {
-        position: "top-center",
-        theme: "dark",
-      });
-      return;
-    }
+const handleLike = async () => {
+  if (!user) {
+    toast.error("You must be logged in to like a problem", {
+      position: "top-center",
+      theme: "dark",
+    });
+    return;
+  }
+
+  if (updateing) return;
+  setUpdateing(true);
+
+  try {
     await runTransaction(fireStore, async (transaction) => {
-      const userRef = doc(fireStore, "users", user?.uid);
+      const userRef = doc(fireStore, "users", user.uid);
       const problemRef = doc(fireStore, "problems", problem.id);
-      const UserDoc = await transaction.get(userRef)
-      const ProblemDoc = await transaction.get(problemRef)
-      if(!UserDoc.exists() || !ProblemDoc.exists()){
-        if(liked){
-          transaction.update(userRef,{
-            likedProblems: UserDoc.data().likedProblems.filter((pid:string) => pid !== problem.id)
-         })
-         transaction.update(problemRef,{
-          likes: ProblemDoc.data().likes - 1
-         })
-         setcurrentProblem
+      const UserDoc = await transaction.get(userRef);
+      const ProblemDoc = await transaction.get(problemRef);
 
-        }
-          
+      if (!UserDoc.exists()) throw new Error("User document not found.");
+      if (!ProblemDoc.exists()) throw new Error("Problem document not found.");
+
+      const userData = UserDoc.data();
+      const problemData = ProblemDoc.data();
+
+      if (liked) {
+        transaction.update(userRef, {
+          likedProblems: (userData.likedProblems || []).filter(
+            (pid: string) => pid !== problem.id
+          ),
+        });
+        transaction.update(problemRef, {
+          likes: (problemData.likes || 0) - 1,
+        });
+        setCurrentProblem((prev) =>
+          prev ? { ...prev, likes: prev.likes - 1 } : prev
+        );
+        setData((prev) => ({ ...prev, liked: false }));
+      } else if (disliked) {
+        transaction.update(userRef, {
+          likedProblems: [...(userData.likedProblems || []), problem.id],
+          dislikedProblems: (userData.dislikedProblems || []).filter(
+            (id: string) => id !== problem.id
+          ),
+        });
+        transaction.update(problemRef, {
+          likes: (problemData.likes || 0) + 1,
+          dislikes: (problemData.dislikes || 0) - 1,
+        });
+        setCurrentProblem((prev) => ({
+          ...prev,
+          likes: prev.likes + 1,
+          dislikes: prev.dislikes - 1,
+        }));
+        setData((prev) => ({ ...prev, liked: true, disliked: false }));
+      } else {
+        transaction.update(userRef, {
+          likedProblems: [...(userData.likedProblems || []), problem.id],
+        });
+        transaction.update(problemRef, {
+          likes: (problemData.likes || 0) + 1,
+        });
+        setCurrentProblem((prev) => ({
+          ...prev,
+          likes: prev.likes + 1,
+        }));
+        setData((prev) => ({ ...prev, liked: true }));
       }
     });
-    
-  };
+  } catch (error) {
+    console.error("Error updating like:", error);
+    toast.error("Failed to update like", { theme: "dark" });
+  } finally {
+    setUpdateing(false);
+  }
+};
+
 
   return (
     <div className="bg-[rgb(40,40,40)] min-h-screen">
@@ -88,7 +145,10 @@ const ProblemDescription: React.FC<problemDescriptionProps> = ({ problem }) => {
                       {liked && (
                         <AiFillLike className="text-[rgb(10,132,255)]" />
                       )}
-                      {!liked && <AiFillLike />}
+                      {!liked && !updateing && <AiFillLike />}
+                      {updateing && (
+                        <AiOutlineLoading3Quarters className="animate-spin" />
+                      )}
                       <span className="text-xs">{currentProblem.likes}</span>
                     </div>
                     <div className="flex items-center cursor-pointer hover:bg-[hsla(0,0%,100%,.1)] gap-1 rounded p-[3px] text-lg transition-colors duration-200 text-[rgb(179,179,179)]">
@@ -191,10 +251,10 @@ function useGetCurrentProblem(problemsId: string) {
     };
     getCurrentProblem();
   }, [problemsId]);
-  return { currentProblem, loading, problemDiffcultyClass };
+  return { currentProblem, loading, problemDiffcultyClass, setCurrentProblem };
 }
 
-function UseGetUsersDataOnProblem(problemsId: string) {
+function useGetUsersDataOnProblem(problemsId: string) {
   const [data, setData] = useState({
     liked: false,
     disliked: false,
