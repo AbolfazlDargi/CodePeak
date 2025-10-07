@@ -191,7 +191,31 @@ const ProblemDescription: React.FC<problemDescriptionProps> = ({
     });
     setUpdateing(true);
   };
+  const handleStar = async () => {
+    if (!user) {
+      toast.error("You must be logged in to star a problem", {
+        position: "top-left",
+        theme: "dark",
+      });
+      return;
+    }
+    if (updateing) return;
+    setUpdateing(true);
 
+    if (!starred) {
+      const userRef = doc(fireStore, "users", user.uid);
+      await updateDoc(userRef, {
+        starredProblems: arrayUnion(problem.id),
+      });
+      setData((prev) => ({ ...prev, starred: true }));
+    } else {
+      const userRef = doc(fireStore, "users", user.uid);
+      await updateDoc(userRef, {
+        starredProblems: arrayRemove(problem.id),
+      });
+      setData((prev) => ({ ...prev, starred: false }));
+    }
+  };
 
   return (
     <div className="bg-[rgb(40,40,40)] min-h-screen">
