@@ -7,7 +7,7 @@ import Link from "next/link";
 import YouTube from "react-youtube";
 import { IoClose } from "react-icons/io5";
 import { collection, orderBy, query, getDocs } from "firebase/firestore";
-import { fireStore } from "@/firebase/firebase";
+import { firestore } from "@/firebase/firebase";
 import { DBProblem } from "@/utils/types/problem";
 
 type problemsTableProps = {
@@ -128,7 +128,7 @@ function useGetProblems(
     const getProblems = async () => {
       if (setLoadingProblems) setLoadingProblems(true);
       const q = query(
-        collection(fireStore, "problems"),
+        collection(firestore, "problems"),
         orderBy("order", "asc")
       );
       const querySnapshot = await getDocs(q);

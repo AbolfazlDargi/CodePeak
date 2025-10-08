@@ -1,4 +1,4 @@
-import { fireStore } from "@/firebase/firebase";
+import { firestore } from "@/firebase/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 
@@ -35,7 +35,7 @@ const FormDataBase: React.FC = () => {
       order: Number(input.order.toString()),
     };
 
-    await setDoc(doc(fireStore, "problems", input.id), newProblem);
+    await setDoc(doc(firestore, "problems", input.id), newProblem);
     alert("Saved to db");
   };
 

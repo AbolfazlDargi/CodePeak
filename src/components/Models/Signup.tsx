@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuthStore } from "@/stores/authModalAtom";
-import { auth, fireStore } from "@/firebase/firebase"; // ✅ use db here
+import { auth, firestore } from "@/firebase/firebase"; // ✅ use db here
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useRouter } from "next/navigation";
 import { setDoc, doc } from "firebase/firestore"; // ✅ no Firestore import
@@ -51,7 +51,7 @@ const Signup: React.FC = () => {
         starredProblems: [],
       };
 
-      await setDoc(doc(fireStore, "users", newUser.user.uid), userData);
+      await setDoc(doc(firestore, "users", newUser.user.uid), userData);
       router.push("/");
     } catch (err: any) {
       toast.error(err.message, { position: "top-center" });
