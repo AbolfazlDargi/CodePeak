@@ -23,12 +23,12 @@ import { toast } from "react-toastify";
 
 type ProblemDescriptionProps = {
   problem: Problem;
-  // _solved: boolean;
+  _solved: boolean;
 };
 
 const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
   problem,
-  // _solved,
+  _solved,
 }) => {
   const [user] = useAuthState(auth);
   const { loading, currentProblem, problemDiffcultyClass, setCurrentProblem } =
@@ -172,9 +172,8 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
         }
       }
     });
-     setUpdating(false);
+    setUpdating(false);
   };
- 
 
   const handleStar = async () => {
     if (!user) {
@@ -231,7 +230,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
                       className={`${problemDiffcultyClass} text-[rgb(0,184,163)] bg-[rgb(5,77,68)] inline-block rounded-[21px] bg-opacity-[.15] px-2.5 py-1 text-xs font-medium capitalize`}>
                       {currentProblem.difficulty}
                     </div>
-                    {solved && (
+                    {(solved || _solved) && (
                       <div className="rounded p-[3px] text-lg transition-colors duration-200 text-[rgb(44,187,93)]">
                         <BsCheck2Circle />
                       </div>
@@ -259,7 +258,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
                         <AiOutlineLoading3Quarters className="animate-spin" />
                       )}
 
-                      <span className="text-xs">{currentProblem.dislikes}</span>
+                      <span className="text-xs">{currentProblem.dislike}</span>
                     </div>
                     <div
                       className="flex items-center cursor-pointer hover:bg-[hsla(0,0%,100%,.1)] gap-1 rounded p-[3px] text-lg transition-colors duration-200 text-[rgb(179,179,179)]"

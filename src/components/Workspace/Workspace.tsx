@@ -15,6 +15,7 @@ type WorkspaceProps = {
 const Workspace: React.FC<WorkspaceProps> = ({ problem }) => {
   const { width, height } = useWindowSize();
   const [success, setSuccess] = useState(false);
+  const [solved, setSolved] = useState(false);
   return (
     <Split
       className="flex flex-row h-screen relative"
@@ -50,8 +51,8 @@ const Workspace: React.FC<WorkspaceProps> = ({ problem }) => {
         gutterDiv.appendChild(dot);
         return gutterDiv;
       }}>
-      <ProblemDescription problem={problem} />
-      <Playground problem={problem} />
+      <ProblemDescription problem={problem} _solved={solved} />
+      <Playground problem={problem} setSuccess={setSuccess} setSolved={setSolved} />
       {success && (
         <Confetti
           width={width}
