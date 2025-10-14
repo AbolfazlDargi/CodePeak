@@ -1,22 +1,12 @@
-import TopBar from "@/components/topBar/TopBar";
-import React from "react";
-import Workspace from "@/components/Workspace/Workspace";
+import ProblemClient from "./problemClient";
 import { problems } from "@/utils/problems";
-import useHasMounted from "../../../hooks/useHasMounted";
 
 type pagePropsProps = {
   params: { pid: string };
 };
 
-export async function generateStaticParams() {
-  return Object.keys(problems).map((key) => ({
-    pid: key,
-  }));
-}
-
 export default function ProblemPage({ params }: pagePropsProps) {
   const problem = problems[params.pid];
-  const hasMounted = useHasMounted();
 
   if (!problem) {
     return (
@@ -25,16 +15,16 @@ export default function ProblemPage({ params }: pagePropsProps) {
       </div>
     );
   }
+
+  // handlerFunction را به رشته تبدیل می‌کنیم تا قابل serialize بشه
   problem.handlerFunction = problem.handlerFunction.toString();
 
-  if (!hasMounted) {
-    return null;
-  }
+  return <ProblemClient problem={problem} />;
+}
 
-  return (
-    <div>
-      <TopBar problemPage />
-      <Workspace problem={problem} />
-    </div>
-  );
+// ✅ این تابع مخصوص سروره، پس اینجا مجازه
+export async function generateStaticParams() {
+  return Object.keys(problems).map((key) => ({
+    pid: key,
+  }));
 }

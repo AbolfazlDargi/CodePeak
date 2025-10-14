@@ -19,6 +19,19 @@ type PlaygroundProps = {
   setSolved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+export interface Isettings {
+  fontSize: string
+  settingsModalIsopen: false
+  dropdownIsopen: false
+
+}
+
+type setting = {
+  fontSize: string;
+  settingModalOpen: boolean;
+  dropDwonIsopen: boolean;
+};
+
 const Playground: React.FC<PlaygroundProps> = ({
   problem,
   setSuccess,
@@ -29,6 +42,11 @@ const Playground: React.FC<PlaygroundProps> = ({
   const [user] = useAuthState(auth);
   const serachparams = useSearchParams();
   const pid = serachparams.get("pid");
+  const [setting, setSetting] = useState<setting>({
+    fontSize: "16px",
+    settingModalOpen: false,
+    dropDwonIsopen: false,
+  });
 
   const handleSubmit = async () => {
     if (!user) {
@@ -102,7 +120,7 @@ const Playground: React.FC<PlaygroundProps> = ({
 
   return (
     <div className="flex flex-col bg-[rgb(40,40,40)] relative overflow-x-hidden">
-      <PreferenceNav />
+      <PreferenceNav setting={setting} setSetting={setSetting} />
       <Split
         className="flex flex-col h-[calc(100vh-94px)]"
         direction="vertical"
@@ -126,7 +144,7 @@ const Playground: React.FC<PlaygroundProps> = ({
             theme={vscodeDark}
             onChange={onChange}
             extensions={[javascript()]}
-            style={{ fontSize: 16 }}
+            style={{ fontSize: setting.fontSize }}
           />
         </div>
         <div className="w-full px-5 overflow-auto">
