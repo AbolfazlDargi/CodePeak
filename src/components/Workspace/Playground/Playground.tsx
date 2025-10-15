@@ -26,6 +26,8 @@ export interface Isettings {
 
 }
 
+
+
 type setting = {
   fontSize: string;
   settingModalOpen: boolean;
