@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { problems } from "@/utils/problems";
 import { useSearchParams } from "next/navigation";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 type PlaygroundProps = {
   problem: Problem;
@@ -20,13 +21,10 @@ type PlaygroundProps = {
 };
 
 export interface Isettings {
-  fontSize: string
-  settingsModalIsopen: false
-  dropdownIsopen: false
-
+  settingsModalIsopen: boolean;
+  fontSize: string;
+  dropdownIsopen: boolean;
 }
-
-
 
 type setting = {
   fontSize: string;
@@ -44,8 +42,10 @@ const Playground: React.FC<PlaygroundProps> = ({
   const [user] = useAuthState(auth);
   const serachparams = useSearchParams();
   const pid = serachparams.get("pid");
+  const [fontSize, setFontSize] = useLocalStorage("lcc-fontSize", "16px");
+
   const [setting, setSetting] = useState<setting>({
-    fontSize: "16px",
+    fontSize: fontSize,
     settingModalOpen: false,
     dropDwonIsopen: false,
   });

@@ -55,7 +55,10 @@ const PreferenceNav: React.FC<PreferenceNavProps> = ({
       </div>
 
       <div className="flex items-center m-2">
-        <button className="group relative rounded px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex ml-auto p-1 mr-2 hover:bg-[hsla(0,0%,100%,.1)] cursor-pointer ">
+        <button
+          className="group relative rounded px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex ml-auto p-1 mr-2 hover:bg-[hsla(0,0%,100%,.1)] cursor-pointer"
+          onClick={() => setSetting(prev => ({ ...prev, settingsModalIsopen: true }))}
+        >
           <div className="h-4 w-4 text-[rgb(138,138,138)] font-bold text-lg">
             <AiOutlineSetting />
           </div>
