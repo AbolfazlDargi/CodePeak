@@ -1,14 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import { problems } from "../../mockProblems/problems";
 import { BiSolidCheckCircle } from "react-icons/bi";
+import { getDoc } from "firebase/firestore";
 import { AiFillYoutube } from "react-icons/ai";
 import Link from "next/link";
 import YouTube from "react-youtube";
 import { IoClose } from "react-icons/io5";
-import { collection, orderBy, query, getDocs } from "firebase/firestore";
-import { firestore } from "@/firebase/firebase";
+import { collection, orderBy, query, getDocs, doc } from "firebase/firestore";
+import { auth, firestore } from "@/firebase/firebase";
 import { DBProblem } from "@/utils/types/problem";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { BsCheckCircle } from "react-icons/bs";
 
 type problemsTableProps = {
   setLoadingProblems?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,6 +26,7 @@ const ProblemsTable: React.FC<problemsTableProps> = ({
   });
 
   const problems = useGetProblems(setLoadingProblems);
+  const solvedProblems = useGetSolvedProblems();
 
   const closeModal = () => {
     setYoutubePlayer({ isOpen: false, videoId: "" });
@@ -34,9 +38,8 @@ const ProblemsTable: React.FC<problemsTableProps> = ({
         closeModal();
       }
       window.addEventListener("keydown", handleEsc);
-
-      return () => window.removeEventListener("keydown", handleEsc);
     };
+    return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
   return (
@@ -54,18 +57,23 @@ const ProblemsTable: React.FC<problemsTableProps> = ({
               className={`${idx % 2 == 1 ? "bg-[rgb(40,40,40)]" : ""}`}
               key={doc.id}>
               <th className="px-2 py-4 font-medium whitespace-nowrap text-[rgb(44,187,93)]">
-                <BiSolidCheckCircle fontSize={"25"} width={"25"} />
+                {solvedProblems.includes(doc.id) && (
+                  <BsCheckCircle fontSize={"18"} width={"18"} />
+                )}
               </th>
               <td className="px-6 py-4">
-                {doc.link ?  (
-                  <Link href={doc.link} className="hover:text-blue-600 cursor-pointer" target="_blank"></Link>
+                {doc.link ? (
+                  <Link
+                    href={doc.link}
+                    className="hover:text-blue-600 cursor-pointer"
+                    target="_blank"></Link>
                 ) : (
-                <Link
-                  className="hover:text-blue-600 cursor-pointer"
-                  href={`/problems/${doc.id}`}>
-                  {doc.title}
-                </Link>
-                  )}
+                  <Link
+                    className="hover:text-blue-600 cursor-pointer"
+                    href={`/problems/${doc.id}`}>
+                    {doc.title}
+                  </Link>
+                )}
               </td>
               <td className={`px-6 py-4 ${difficulycolor}`}>
                 {doc.difficulty}
@@ -132,10 +140,10 @@ function useGetProblems(
         orderBy("order", "asc")
       );
       const querySnapshot = await getDocs(q);
-      const tmp:DBProblem[] = [];
+      const tmp: DBProblem[] = [];
       querySnapshot.forEach((doc) => {
         console.log(doc.id, " => ", doc.data());
-        tmp.push({ id: doc.id,...doc.data()} as DBProblem);
+        tmp.push({ id: doc.id, ...doc.data() } as DBProblem);
       });
       setProblemsData(tmp);
       if (setLoadingProblems) setLoadingProblems(false);
@@ -143,4 +151,22 @@ function useGetProblems(
     getProblems();
   }, [setLoadingProblems]);
   return problemsData;
+}
+
+function useGetSolvedProblems() {
+  const [solvedProblems, setsolvedProblems] = useState<string[]>([]);
+  const [user] = useAuthState(auth);
+
+  useEffect(() => {
+    const getSolvedProblems = async () => {
+      const userRef = doc(firestore, "users", user!.uid);
+      const userDoc = await getDoc(userRef);
+
+      if (userDoc.exists()) {
+        setsolvedProblems(userDoc.data().solvedProblems);
+      }
+    };
+    if (user) getSolvedProblems();
+  }, [user]);
+  return solvedProblems;
 }
