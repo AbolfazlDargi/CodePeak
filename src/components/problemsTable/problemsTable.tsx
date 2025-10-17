@@ -2,6 +2,7 @@
 import React, { useActionState, useEffect, useState } from "react";
 import { problems } from "../../mockProblems/problems";
 import { BiSolidCheckCircle } from "react-icons/bi";
+import { createPortal } from "react-dom";
 import { getDoc } from "firebase/firestore";
 import { AiFillYoutube } from "react-icons/ai";
 import Link from "next/link";
@@ -47,7 +48,13 @@ const ProblemsTable: React.FC<problemsTableProps> = ({
       <tbody className="text-white">
         {problems.map((doc, idx) => {
           const difficulycolor =
-            doc.difficulty === "Easy" ? "text-[rgb(44,187,93)]" : doc.difficulty === "Medium" ? "text-yellow-500" : doc.difficulty === "Hard" ? "text-red-500": null
+            doc.difficulty === "Easy"
+              ? "text-[rgb(44,187,93)]"
+              : doc.difficulty === "Medium"
+              ? "text-yellow-500"
+              : doc.difficulty === "Hard"
+              ? "text-red-500"
+              : null;
           return (
             <tr
               className={`${idx % 2 == 1 ? "bg-[rgb(40,40,40)]" : ""}`}
@@ -95,29 +102,27 @@ const ProblemsTable: React.FC<problemsTableProps> = ({
           );
         })}
       </tbody>
-      {youtubePlayer.isOpen && (
-        <tfoot className="fixed top-0 left-0 h-screen w-screen flex items-center justify-center">
-          <div
-            className="bg-black z-10 opacity-70 top-0 left-0 w-screen h-screen absolute"
-            onClick={closeModal}></div>
-          <div className="w-full z-50 h-full px-6 relative max-w-4xl">
-            <div className="w-full h-full flex items-center justify-center relative">
-              <div className="w-full relative">
-                <IoClose
-                  fontSize={"35"}
-                  className="cursor-pointer absolute -top-16 right-0"
-                  onClick={closeModal}
-                />
-                <YouTube
-                  videoId={youtubePlayer.videoId}
-                  loading="lazy"
-                  iframeClassName="w-full min-h-[500px]"
-                />
-              </div>
+      {youtubePlayer.isOpen &&
+        createPortal(
+          <div className="fixed top-0 left-0 h-screen w-screen flex items-center justify-center z-50">
+            <div
+              className="absolute top-0 left-0 w-full h-full bg-black opacity-70"
+              onClick={closeModal}
+            />
+            <div className="relative z-10 w-full max-w-4xl px-6">
+              <IoClose
+                fontSize={35}
+                className="cursor-pointer absolute -top-16 right-0 text-white"
+                onClick={closeModal}
+              />
+              <YouTube
+                videoId={youtubePlayer.videoId}
+                iframeClassName="w-full min-h-[500px]"
+              />
             </div>
-          </div>
-        </tfoot>
-      )}
+          </div>,
+          document.body
+        )}
     </>
   );
 };
