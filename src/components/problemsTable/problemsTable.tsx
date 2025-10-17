@@ -47,11 +47,7 @@ const ProblemsTable: React.FC<problemsTableProps> = ({
       <tbody className="text-white">
         {problems.map((doc, idx) => {
           const difficulycolor =
-            doc.difficulty === "Easy"
-              ? "text-[rgb(44,187,93)]"
-              : doc.difficulty === "Medium"
-              ? "text-[rgb(255,192,30)]"
-              : "text-red-600";
+            doc.difficulty === "Easy" ? "text-[rgb(44,187,93)]" : doc.difficulty === "Medium" ? "text-yellow-500" : doc.difficulty === "Hard" ? "text-red-500": null
           return (
             <tr
               className={`${idx % 2 == 1 ? "bg-[rgb(40,40,40)]" : ""}`}
@@ -78,7 +74,7 @@ const ProblemsTable: React.FC<problemsTableProps> = ({
               <td className={`px-6 py-4 ${difficulycolor}`}>
                 {doc.difficulty}
               </td>
-              <td className="px-6 py-4">{doc.category}</td>
+              <td className="px-6 py-4">{doc.catgeroy}</td>
               <td className="px-6 py-4">
                 {doc.videoId ? (
                   <AiFillYoutube
